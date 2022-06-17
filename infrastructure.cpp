@@ -83,7 +83,6 @@ void unbounded_array::enqueue(message *msg)
 {
     pthread_mutex_lock(&mutex);
     message_array.push_front(msg);
-    printf("msg = %p, list size = %d\n", msg, (int)message_array.size());
     pthread_mutex_unlock(&mutex);
     sem_post(&empty_array);
 }
@@ -93,11 +92,8 @@ message* unbounded_array::dequeue(void)
     message* ret_message;
     sem_wait(&empty_array);
     pthread_mutex_lock(&mutex);
-    printf("dequeue 1, list size = %d\n", (int)message_array.size());
     ret_message = message_array.back();
-    printf("dequeue 2, msg = %p, list size = %d\n", ret_message, (int)message_array.size());
     message_array.pop_back();
-    printf("dequeue 3, list size = %d\n", (int)message_array.size());
     pthread_mutex_unlock(&mutex);
     return ret_message;
 }
