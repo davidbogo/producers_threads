@@ -4,7 +4,7 @@ bounded_array::bounded_array(size_t size)
 {
     size_of_array = size;
     pthread_mutex_init(&mutex, NULL);
-    sem_init(&empty_array, 0, size);
+    sem_init(&empty_array, 0, 0);
     sem_init(&full_array, 0, size);
     message_array = new message*[size];
     //thead will always be 0
