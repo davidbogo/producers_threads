@@ -4,6 +4,9 @@
 #include <string>
 #include <pthread.h>
 #include <stdio.h>
+#include <cstdlib>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define MAX_MESSAGE_LEN		255
 using namespace std;
@@ -16,11 +19,30 @@ enum news_type
     NT_TERMINATE
 };
 
+struct producer_info
+{
+    int producer_no;
+    size_t num_of_messages;
+    size_t queue_size;
+};
+
 struct message
 {
     int producer_no;
     news_type type;
     int message_no;
+};
+
+class thread_run
+{
+public:
+    thread_run()
+    {
+    }
+    ~thread_run()
+    {
+    }
+    virtual void run()=0;
 };
 
 class bounded_array
@@ -54,7 +76,7 @@ public:
     message* dequeue(void);
 };
 
-class producer
+class producer : public thread_run
 {
     int                 prod_id;
     size_t              array_size;
@@ -67,14 +89,14 @@ class producer
     message* create_new_message(int terminate = 0);
 
 public:
-    producer(int id, size_t num_of_reports, size_t array_size);
+    producer(int id, size_t num_of_reports, size_t array_sizes);
     ~producer();
 
-    void produce();
+    void run();
     message *get_message(void) { return message_array.dequeue(); }
 };
 
-class dispatcher
+class dispatcher : public thread_run
 {
     size_t              prod_arrays_size;
     size_t              active_arrays;
@@ -102,10 +124,11 @@ public:
     screen_manager(size_t max_messages);
     ~screen_manager();
     
-    void push(message *msg);
+    void push_msg(message *msg);
+    void print_messages();
 };
 
-class co_editor
+class co_editor : public thread_run
 {
     screen_manager*     scr_mgr;
     dispatcher*         dspt;
@@ -116,5 +139,4 @@ public:
     ~co_editor();
 
     void run();
-    bounded_array* get_prod_array();
 };

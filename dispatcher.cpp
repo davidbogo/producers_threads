@@ -5,6 +5,9 @@ dispatcher::dispatcher(size_t max_producers)
     prod_arrays_size = max_producers;
     active_arrays = 0;
     producers = new producer*[max_producers];
+    for(int i = 0; i < prod_arrays_size; i++) {
+        producers[i] = NULL;
+    }
 }
 
 int dispatcher::dispatch_message(producer* prod)
@@ -21,9 +24,21 @@ int dispatcher::dispatch_message(producer* prod)
         news.enqueue(message_from_prod);
         break;
     default: //terminated
+        delete message_from_prod;
         return 1;
     }
     return 0;
+}
+
+void dispatcher::register_producer(producer *p) 
+{
+    for(int i = 0; i < prod_arrays_size; i++) {
+        if(producers[i] == NULL) {
+            producers[i] = p;
+            active_arrays++;
+            break;
+        }
+    }
 }
 
 void dispatcher::run()
@@ -32,9 +47,8 @@ void dispatcher::run()
         for (int i = 0; i < prod_arrays_size; i++) {
             if (producers[i] == NULL)
                 continue;
-            int listen_to_prod = dispatch_message(producers[i]);
-            if (listen_to_prod) {
-                // Must terminate
+            int must_terminate = dispatch_message(producers[i]);
+            if (must_terminate) {
                 delete producers[i];
                 producers[i] = NULL;
                 active_arrays--;
@@ -57,6 +71,18 @@ void dispatcher::run()
     terminated->producer_no = -1;
     terminated->type = NT_TERMINATE;
     news.enqueue(terminated);
+}
+
+message* dispatcher::get_message(news_type type_nt) 
+{
+    switch (type_nt) {
+    case NT_SPORT:
+        return sport.dequeue();
+    case NT_WEATHER:
+        return weather.dequeue();
+    default: //NT_NEWS
+        return news.dequeue();
+    }
 }
 
 dispatcher::~dispatcher()

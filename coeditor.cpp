@@ -13,10 +13,15 @@ co_editor::~co_editor()
 
 void co_editor::run()
 {
-    message* typed_message = dspt->get_message(type);
-    struct timespec ts;
-    ts.tv_sec = 0;
-    ts.tv_nsec = 100000000;
-    nanosleep(&ts, NULL); // edit
-    scr_mgr->push(typed_message);
+    message* typed_message;
+    do {
+        typed_message = dspt->get_message(type);
+        if (typed_message->type != NT_TERMINATE) {
+            struct timespec ts;
+            ts.tv_sec = 0;
+            ts.tv_nsec = 100000000;
+            nanosleep(&ts, NULL); // edit
+        }
+        scr_mgr->push_msg(typed_message);
+    } while (typed_message->type != NT_TERMINATE);
 }
