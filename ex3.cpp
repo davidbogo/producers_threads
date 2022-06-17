@@ -5,6 +5,7 @@ void *run_object( void *ptr )
     thread_run* object;
     object = (thread_run*)ptr;
     object->run();
+    return NULL;
 }
 
 /*producer_to_create* readfileprod(int fd, int* co_editor_queue)
@@ -94,19 +95,19 @@ int main()
     list<producer_info*> information_list;
     producer_info* prod1 = new producer_info();
     prod1->producer_no = 1;
-    prod1->num_of_messages = 5;
-    prod1->queue_size = 3;
+    prod1->num_of_messages = 50;
+    prod1->queue_size = 10;
     information_list.push_back(prod1);
     producer_info* prod2 = new producer_info();
     prod2->producer_no = 2;
     prod2->num_of_messages = 25;
     prod2->queue_size = 3;
-    //information_list.push_back(prod2);
+    information_list.push_back(prod2);
     producer_info* prod3 = new producer_info();
     prod3->producer_no = 3;
     prod3->num_of_messages = 16;
     prod3->queue_size = 30;
-    //information_list.push_back(prod3);
+    information_list.push_back(prod3);
     producer** prod_array = new producer*[information_list.size()];
     list<producer_info*>::iterator it;
     int i = 0;
