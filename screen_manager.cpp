@@ -6,7 +6,6 @@ screen_manager::screen_manager(size_t max_messages)
 
 screen_manager::~screen_manager() 
 {
-    delete &output_array;
 }
 
 void screen_manager::push_msg(message* msg)
