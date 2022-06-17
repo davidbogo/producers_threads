@@ -48,6 +48,7 @@ message* bounded_array::dequeue(void)
     pthread_mutex_lock(&mutex);
     //pop the msg and update head
     ret_message = message_array[head_index];
+    message_array[head_index] = NULL;
     head_index++;
     if (head_index >= size_of_array)
         head_index = 0;
