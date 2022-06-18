@@ -7,6 +7,8 @@
 #include <cstdlib>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <fstream>
+#include <algorithm>
 
 #define MAX_MESSAGE_LEN		255
 using namespace std;
