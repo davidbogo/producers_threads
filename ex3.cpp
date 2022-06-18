@@ -8,67 +8,6 @@ void *run_object( void *ptr )
     return NULL;
 }
 
-/*producer_to_create* readfileprod(int fd, int* co_editor_queue)
-{
-    char buf[512];
-    size_t buf_len = sizeof(buf);
-    int offset = 0;
-    int counter_of_three_lines = 1;
-    int start_offset = 0;
-    string producer_no;
-    string num_of_messages;
-    string queue_size;
-    string co_editor_queue_size;
-    if (!buf || buf_len == 0)
-        return;
-    while (offset + 1 < buf_len) {
-        // we will be sending a struct of every producer
-        producer_info producer_to_create = new producer_info();
-        // we write down here the number of the producer
-        if (counter_of_three_lines == 2) {
-            for (int i = 0; i < strlen(buf); i++) {
-                producer_no += buf[i];
-                start_offset = strlen(buf);
-            }
-            producer_to_create.producer_no = stoi(producer_no);
-        } else if (counter_of_three_lines == 3) {
-            //we write down here the number of messages for a prod
-            for (int i = start_offset; i < strlen(buf); i++) {
-                num_of_messages += buf[i];
-                start_offset = strlen(buf);
-            }
-            producer_to_create.num_of_messages = stoi(num_of_messages);
-        }
-        size_t bytes_read = read(fd, buf + offset, 1);
-        if (bytes_read == 0)
-            break;
-        if (buf[offset] == '\n') {
-            if (counter_of_three_lines == 3) {
-                counter_of_three_lines = 1;
-                for (int i = start_offset; i < strlen(buf); i++) {
-                queue_size += buf[i];
-                }
-            producer_to_create.queue_size = stoi(queue_size);
-                break;
-            }
-            counter_of_three_lines++;
-        }// the character will later be replaced by 0
-        if (buf[offset] == EOF) {
-            for (int i = 0; i < strlen(buf); i++) {
-                co_editor_queue_size += buf[i];
-                }
-            *co_editor_queue = (stoi)co_editor_queue_size;
-            if (*co_editor_queue <= 0)
-                    *co_editor_queue = -1;
-            delete producer_to_create;
-            return NULL;
-        }
-        offset++;
-    }
-    buf[offset] = 0;
-    return &producer_to_create;
-}*/
-
 int main(int argc, char** argv)
 {
     int co_editor_queue_size = 0;
