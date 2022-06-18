@@ -4,7 +4,7 @@ objects = ex3.o producer.o dispatcher.o coeditor.o screen_manager.o infrastructu
 all: ex3.out
 
 ex3.out: $(objects)
-	    $(CXX) -o ex3.out $(objects)
+	    $(CXX) -pthread -o ex3.out $(objects)
 
 ex3.o : ex3.cpp ex3.h
 	        $(CXX) -c ex3.cpp
