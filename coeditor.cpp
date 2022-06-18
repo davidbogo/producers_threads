@@ -14,6 +14,7 @@ co_editor::~co_editor()
 void co_editor::run()
 {
     message* typed_message;
+    news_type nt; 
     do {
         typed_message = dspt->get_message(type);
         if (typed_message->type != NT_TERMINATE) {
@@ -22,6 +23,7 @@ void co_editor::run()
             ts.tv_nsec = 100000000;
             nanosleep(&ts, NULL); // edit
         }
+        nt = typed_message->type;
         scr_mgr->push_msg(typed_message);
-    } while (typed_message->type != NT_TERMINATE);
+    } while (nt != NT_TERMINATE);
 }
